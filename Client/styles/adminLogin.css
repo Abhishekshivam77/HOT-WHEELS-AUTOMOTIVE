@@ -1,0 +1,117 @@
+*{
+    background-color:#efe4d5 ;
+}
+    div, h1, form, input, p { 
+    padding: 0;
+    margin: 0;
+    outline: none;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 16px;
+    color: #666;
+    
+    }
+    h1 {
+        padding: 10px 0;
+        font-size: 32px;
+        font-weight: 300;
+        text-align: center;
+        }
+        p {
+        font-size: 15px;
+        }
+        hr {
+        color: #585555;
+        opacity: 0.3;
+        /* border: 4px solid red; */
+        margin: 8%;
+        }
+        .main-block {
+        max-width: 340px; 
+        min-height: 460px; 
+        padding: 10px 0;
+        margin: auto;
+        margin-top: 30px;
+        border-radius: 15px; 
+        border: solid 1px #ccc;
+        box-shadow: 1px 2px 5px rgba(0,0,0,.31);
+        /* border: 4px solid red;;  */
+        /* background: #ebebeb;  */
+        background-color:#efe4d5 ;
+        
+        }
+        .main-block>h1{
+            color: #de8f19;
+        }
+        form {
+        margin: 0 30px;
+       
+        height: 300px;
+        }
+        #incorrectCredentials{
+            color: red;
+            padding-top: 10px;
+            text-align: center;
+        }
+        .account-type, .gender {
+        margin: 15px 0;
+        /* border: 4px solid red; */
+        }
+        input[type=radio] {
+        display: none;
+        }
+        label#icon {
+        margin-bottom: 2%;
+        border-radius: 5px 0 0 5px;
+        background-color:#efe4d5 ;
+        }
+     
+       
+       
+        input[type=text], input[type=password] {
+        width: calc(100% - 57px);
+        height: 36px;
+        margin: 13px 0 0 -5px;
+        padding-left: 10px; 
+        border-radius:5px;
+        border: solid 1px #cbc9c9; 
+        box-shadow: 1px 2px 5px rgba(0,0,0,.09); 
+        background: #efe4d5; 
+        /* outline:1px solid #de8f19; */
+        }
+
+        label#icon:hover,[type=text]:hover, input[type=password]:hover{
+            border-color: #de8f19;
+        }
+        
+        #icon {
+        display: inline-block;
+        padding: 9.3px 15px;
+        box-shadow: 1px 2px 5px rgba(0,0,0,.09); 
+        background: #de8f19;
+        color: black;
+        text-align: center;
+        
+        }
+        .btn-block {
+        margin-top: 10px;
+        text-align: center;
+        }
+        input[type=submit] {
+        width: 100%;
+        padding: 10px 0;
+        margin: 10px auto;
+        border-radius: 5px; 
+        border: none;
+        background: #de8f19;
+        font-size: 14px;
+        font-weight: 600;
+        color: black;
+        outline: none;
+        margin-top:10%;
+        }
+    
+       
+        input[type=submit]:hover {
+        background: #eea943;
+        cursor: pointer;
+        }

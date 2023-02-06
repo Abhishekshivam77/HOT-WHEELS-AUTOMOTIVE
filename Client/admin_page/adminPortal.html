@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        line-height: 1.3rem;
+        font-family: "Lato", sans-serif;
+      }
+      body::-webkit-scrollbar {
+        display: none;
+      }
+
+      textarea:focus,
+      input:focus {
+        outline: none;
+      }
+
+      /* Chrome, Safari, Edge, Opera */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Firefox */
+      input[type="number"] {
+        --moz-appearance: textfield;
+      }
+      #container {
+        display: flex;
+      }
+      aside {
+        top: 0;
+        width: 20%;
+        height: 100vh;
+        /* border: 1px solid red; */
+        text-align: center;
+      }
+      #admin_name {
+        font-size: 20px;
+        font-weight: 600;
+        word-spacing: 2px;
+        color: rgb(66, 66, 66);
+      }
+      #admin_details {
+        width: 100%;
+        margin: 50px 0;
+      }
+      #admin_img {
+        margin-top: 20px;
+        width: 40%;
+      }
+      #admin_page_options {
+        display: flex;
+        flex-direction: column;
+        font-size: 18px;
+      }
+
+      #admin_page_options > a {
+        color: #000000;
+        margin-bottom: 50px;
+
+        transition: all 0.1s;
+        /* transition: padding-bottom 0.2s; */
+      }
+      #admin_page_options > a:hover {
+        color: rgb(255, 213, 44);
+        text-decoration: underline;
+        font-size: 19px;
+        cursor: pointer;
+      }
+      section {
+        width: 80%;
+        height: 100vh;
+        border-left: 2px solid black;
+        overflow-y: scroll;
+      }
+      #admin_orders_main_body,
+      #admin_users_main_body,
+      #admin_products_main_body,
+      #admin_add_products_main_body {
+        position: relative;
+        width: 90%;
+        background-color: white;
+        border-radius: 10px;
+        border: 0.5px solid rgba(0, 0, 0, 0.1);
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      #admin_orders_sec_head {
+        position: absolute;
+        background-color: #000000;
+        font-weight: 600;
+        font-size: 25px;
+        color: #ffffff;
+        width: 100%;
+        height: 100px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 10px;
+        padding-left: 20px;
+      }
+
+      #ordertable {
+        margin: 130px auto 50px auto;
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        justify-content: center;
+      }
+
+      #order_list_heading {
+        height: 50px;
+        border-bottom: 1px solid #ddd;
+        align-content: center;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      #order_list_heading > span {
+        text-align: center;
+        font-weight: 600;
+        font-size: 18px;
+        /* color: rgb(69, 69, 69); */
+        color: #000000;
+      }
+
+      #all_orders_list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .one_order_list_card {
+        border-bottom: 1px solid rgb(236, 236, 236);
+        padding: 10px;
+      }
+
+      .order_short_info {
+        color: rgb(23, 23, 23);
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        align-content: center;
+        height: 30px;
+        justify-content: space-between;
+      }
+
+      #all_orders_list > div:last-child {
+        border-bottom: 1px solid rgb(236, 236, 236);
+      }
+
+      .order_short_info > span {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+      }
+
+      .order_short_info > span:first-child {
+        position: relative;
+      }
+
+      .order_short_info > span:last-child {
+        cursor: pointer;
+        background: #ff3d3d;
+        border-color: #ff3d3d;
+        /* background-color: hsl(214, 100%, 71%); */
+        border-radius: 4px;
+        color: #ffffff;
+        height: 40px;
+      }
+
+      .order_short_info svg {
+        height: 17px;
+        width: 17px;
+        transform: rotate(0deg);
+        position: absolute;
+        left: 10px;
+        -webkit-transition: transform 0.5s;
+        -moz-transition: transform 0.5s;
+        transition: transform 0.5s;
+      }
+
+      .order_detailed_info {
+        overflow: hidden;
+        height: max-content;
+        border-radius: 5px;
+        background-color: rgb(234, 234, 234);
+      }
+
+      .all_ordered_item_name_list {
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.7s;
+      }
+
+      .one_order_list_card:hover .all_ordered_item_name_list {
+        max-height: 1000px;
+      }
+
+      .one_order_list_card:hover svg {
+        transform: rotate(90deg);
+      }
+
+      .one_order_list_card:hover {
+        background-color: rgb(251, 251, 251);
+      }
+
+      .all_ordered_item_name_list > table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .all_ordered_item_name_list > table th,
+      .all_ordered_item_name_list > table td {
+        height: 30px;
+        width: 240px;
+        text-align: center;
+      }
+
+      .all_ordered_item_name_list > table > thead tr {
+        color: rgb(23, 23, 23);
+      }
+
+      .all_ordered_item_name_list > table > tbody tr {
+        color: rgb(39, 39, 39);
+        border-top: 1px solid rgb(171, 171, 171);
+      }
+      .all_ordered_item_name_list > table > tbody > tr:last-child {
+        border-bottom: 1px solid rgb(171, 171, 171);
+      }
+      .all_ordered_item_name_list > table > tfoot tr > th:first-child {
+        padding: 0 70px;
+        text-align: right;
+      }
+      /* Users*/
+
+      #admin_users_sec_head {
+        position: absolute;
+        background-color: #000000;
+        font-weight: 600;
+        font-size: 25px;
+        color: #ffffff;
+        width: 100%;
+        height: 100px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 10px;
+        padding-left: 20px;
+      }
+
+      #usertable {
+        margin: 130px auto 13px auto;
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        justify-content: center;
+      }
+
+      #user_list_heading {
+        height: 50px;
+        border-bottom: 1px solid #ddd;
+        align-content: center;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      #user_list_heading > span {
+        text-align: center;
+        font-weight: 600;
+        font-size: 18px;
+        /* color: rgb(69, 69, 69); */
+        color: hsl(0, 0%, 0%);
+      }
+
+      #all_users_list {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .one_user_list_card {
+        width: 100%;
+        border-bottom: 1px solid rgb(236, 236, 236);
+      }
+
+      .user_short_info {
+        width: 100%;
+        color: rgb(23, 23, 23);
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        align-content: center;
+        height: 50px;
+        justify-content: space-between;
+      }
+
+      #all_users_list > div:last-child {
+        border-bottom: 0px solid rgb(236, 236, 236);
+      }
+
+      .user_short_info > span {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+      }
+
+      .user_short_info > span:first-child {
+        position: relative;
+      }
+
+      .user_short_info > span:last-child {
+        cursor: pointer;
+        background-color: hsl(0, 100%, 54%);
+        border: 0px;
+        border-radius: 4px;
+        color: white;
+        height: 35px;
+        width: 100%;
+      }
+
+      .user_short_info > span:last-child > select > option {
+        background-color: #ffffff;
+        color: #575757;
+      }
+
+      .user_short_info svg {
+        height: 17px;
+        width: 17px;
+        transform: rotate(0deg);
+        position: absolute;
+        left: 10px;
+        -webkit-transition: transform 0.5s;
+        -moz-transition: transform 0.5s;
+        transition: transform 0.5s;
+      }
+      /* Products*/
+
+      #admin_products_sec_head {
+        position: absolute;
+        background-color: #000000;
+        font-weight: 600;
+        font-size: 25px;
+        color: #ffffff;
+        width: 100%;
+        height: 100px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 10px;
+        padding-left: 20px;
+      }
+
+      #product_table {
+        margin: 130px auto 50px auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        width: 90%;
+        gap: 20px;
+        color: #000000;
+        padding-bottom: 20px;
+      }
+      .one_product_card_at_admin {
+        border: 0.5px solid rgba(0, 0, 0, 0.1);
+        padding: 10px 10px;
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+      }
+      .one_product_card_at_admin > div {
+        display: flex;
+        flex-direction: column;
+        margin-top: 7px;
+        width: 95%;
+        overflow: hidden;
+        gap: 3px;
+      }
+
+      .one_product_card_at_admin > div > img {
+        margin: 0px;
+        width: 100%;
+        border-radius: 5px;
+      }
+
+      .one_product_card_at_admin > div > span {
+        color: #080808;
+        /* color: #427a012e; */
+      }
+
+      .one_product_card_at_admin > div > button {
+        color: #ffffff;
+        background-color: #cd1d1d;
+        height: 40px;
+        border: 0px;
+        margin: 5px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .one_product_card_at_admin > div > input {
+        padding: 5px 5px;
+        margin: 0px;
+        max-width: 99.5%;
+        border: 1px solid #575757;
+        border-radius: 5px;
+        color: #3a3a3a;
+      }
+
+      .one_product_card_at_admin > div > textarea {
+        max-width: 99.7%;
+        padding: 5px;
+        margin: 0px;
+        border-radius: 5px;
+        color: #3a3a3a;
+      }
+      .one_product_card_at_admin > div > textarea {
+        scrollbar-width: thin;
+        scrollbar-color: rgb(209, 18, 67) white;
+      }
+      .one_product_card_at_admin > div > textarea::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      .one_product_card_at_admin > div > textarea::-webkit-scrollbar-track {
+        background: rgb(234, 234, 234);
+        border-radius: 20px;
+      }
+
+      .one_product_card_at_admin > div > textarea::-webkit-scrollbar-thumb {
+        background-color: rgb(209, 18, 67);
+        border-radius: 20px;
+        border: 3px solid rgb(255, 255, 255);
+      }
+
+      /* Add Products */
+      #admin_add_products_sec_head {
+        position: absolute;
+        background-color: #000000;
+        font-weight: 600;
+        font-size: 25px;
+        color: #ffffff;
+        width: 100%;
+        height: 100px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 10px;
+        padding-left: 20px;
+      }
+
+      #add_product_sec_body {
+        margin: 130px auto 50px auto;
+        display: flex;
+        width: 90%;
+        gap: 20px;
+        overflow-x: scroll;
+        color: #d11243;
+        scrollbar-width: thin;
+        padding-bottom: 20px;
+        scrollbar-color: rgb(209, 18, 67) white;
+      }
+
+      #add_product_sec_body::-webkit-scrollbar {
+        display: none;
+      }
+
+      #add_product_sec_body::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      #add_product_sec_body::-webkit-scrollbar-track {
+        background: rgb(234, 234, 234);
+        border-radius: 20px;
+      }
+
+      #add_product_sec_body::-webkit-scrollbar-thumb {
+        background-color: rgb(209, 18, 67);
+        border-radius: 20px;
+        border: 3px solid rgb(255, 255, 255);
+      }
+
+      .add_one_product_card_in_server {
+        border: 0.5px solid rgba(0, 0, 0, 0.1);
+        padding: 5px 10px 10px;
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        border-radius: 5px;
+      }
+
+      .add_one_product_card_in_server > div {
+        display: flex;
+        flex-direction: column;
+        margin-top: 7px;
+        width: 100%;
+        gap: 3px;
+      }
+
+      .add_one_product_card_in_server > div > img {
+        margin: 0px;
+        width: 100%;
+        border-radius: 5px;
+      }
+
+      .add_one_product_card_in_server > div > span {
+        color: #240000;
+      }
+
+      .add_one_product_card_in_server > div > button {
+        color: #d11243;
+        background-color: #ffffff;
+        border: 2px solid #d11243;
+        height: 40px;
+        border-radius: 5px;
+        font-size: 16px;
+        margin: 7px 0;
+      }
+
+      .add_one_product_card_in_server > div > input {
+        padding: 5px 5px;
+        margin: 0px;
+        max-width: 99.5%;
+        border: 1px solid #575757;
+        border-radius: 5px;
+        color: #3a3a3a;
+      }
+
+      .add_one_product_card_in_server > div > textarea {
+        max-width: 99.7%;
+        padding: 0px;
+        margin: 0px;
+        border-radius: 5px;
+        color: #3a3a3a;
+      }
+      #preview_container {
+        line-height: 2rem;
+        margin: 10px auto;
+        width: 350px;
+        padding: 20px;
+        border-radius: 30px 15px 15px 15px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px,
+          rgba(0, 0, 0, 0.23) 0px 3px 6px;
+        height: max-content;
+        color: rgb(0, 0, 0);
+      }
+      #img-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+      #preview_container img {
+        width: 250px;
+      }
+      #preview_container p {
+        font-size: 16px;
+        font-weight: 400;
+        margin: 20px 0;
+      }
+      #preview_btn {
+        color: rgb(255, 255, 255);
+        background-color: goldenrod;
+        border: gold;
+        padding: 7px 15px;
+        font-size: 16px;
+        border-radius: 5px;
+      }
+      /* loading  */
+      #orders_loading {
+        width: 35px;
+        margin: auto;
+        margin-top: 40px;
+        display: block;
+      }
+      #users_loading {
+        width: 35px;
+        margin: auto;
+        margin-top: 40px;
+        display: block;
+      }
+      #products_loading {
+        width: 35px;
+        margin: auto;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <aside>
+        <div id="admin_details">
+          <div id="admin_name">The Admin</div>
+          <img
+            id="admin_img"
+            src="https://sensational-wisp-a46f22.netlify.app/admin/Admin%20images/profile_icon_2.svg"
+            alt=""
+          />
+        </div>
+        <div id="admin_page_options">
+          <a id="all_orders_option" onclick="showAllOrders()">Orders</a>
+          <a id="all_users_option" onclick="showAllUsers()">Users</a>
+          <a id="all_products_option" onclick="showAllProducts()">Products</a>
+          <a id="add_products_option" onclick="showAddProductSec()"
+            >Add Product</a
+          >
+        </div>
+      </aside>
+      <section>
+        <!-- Orders-->
+        <div
+          id="admin_orders_main_body"
+          style="display: flex; margin-top: 40px"
+        >
+          <div id="admin_orders_sec_head">All Orders</div>
+          <div id="ordertable">
+            <div id="order_list_heading">
+              <span>Order ID</span>
+              <span>Customer ID</span>
+              <span>No. of Products</span>
+              <span>Action</span>
+            </div>
+            <div id="all_orders_list"></div>
+            <img
+              src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif"
+              id="orders_loading"
+              alt=""
+            />
+          </div>
+        </div>
+        <!--   Users  -->
+        <div id="admin_users_main_body" style="display: none; margin-top: 40px">
+          <div id="admin_users_sec_head">All Users</div>
+          <div id="usertable">
+            <div id="user_list_heading">
+              <span>User ID</span>
+              <span>Username</span>
+              <span>Email</span>
+              <span>Action</span>
+            </div>
+            <div id="all_users_list"></div>
+            <img
+              src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif"
+              id="users_loading"
+              alt=""
+            />
+          </div>
+        </div>
+        <!-- Products -->
+
+        <div
+          id="admin_products_main_body"
+          style="display: none; margin-top: 40px"
+        >
+          <div id="admin_products_sec_head">All Products</div>
+          <div id="product_table"></div>
+          <img
+            src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif"
+            id="products_loading"
+            alt=""
+          />
+        </div>
+        <!--  Add Products -->
+
+        <div
+          id="admin_add_products_main_body"
+          style="display: none; margin-top: 40px"
+        >
+          <div id="admin_add_products_sec_head">Add Products</div>
+          <div id="add_product_sec_body">
+            <div class="add_one_product_card_in_server" style="padding: 20px">
+              <div>
+                <span>Category</span>
+                <input
+                  data-key="category"
+                  type="text"
+                  placeholder="Enter Category"
+                  value=""
+                  required=""
+                />
+              </div>
+              <div>
+                <span>Sub-Category</span>
+                <input
+                  data-key="category"
+                  type="text"
+                  placeholder="Enter Sub-Category"
+                  value=""
+                  required=""
+                />
+              </div>
+              <div>
+                <span>Name</span>
+                <input
+                  data-key="title"
+                  type="text"
+                  placeholder="Enter Product Name"
+                  value=""
+                  required=""
+                />
+              </div>
+              <div>
+                <span>Description</span>
+                <textarea
+                  style="padding: 5px"
+                  data-key="description"
+                  cols="30"
+                  placeholder="Product Description"
+                  rows="5"
+                  required=""
+                ></textarea>
+              </div>
+              <div>
+                <span>Price</span>
+                <input
+                  data-key="price"
+                  type="number"
+                  placeholder="Product Price"
+                  value=""
+                  required=""
+                />
+              </div>
+              <div>
+                <span>Image</span>
+                <input data-key="img1" type="url" placeholder=Image URL"
+                value="" required="" />
+              </div>
+              <div>
+                <button onclick="previewNewProductCard()">Preview</button>
+                <button
+                  onclick="addNewProduct()"
+                  id="addProductButtonAdmin"
+                  style="background-color: #ff0000; border: 0px; color: white"
+                >
+                  ADD
+                </button>
+              </div>
+            </div>
+            <div id="preview_container" style="display: none">
+              <div id="img-container">
+                <img src="" alt="" />
+              </div>
+              <div>
+                <p id="preview_price" style="font-weight: 600; font-size: 26px">
+                  <span id="preview_price_pre_dot"></span
+                  ><sup id="preview_price_post_dot"></sup>
+                </p>
+                <p>
+                  <span
+                    id="preview_title"
+                    style="font-weight: 600; font-size: 20px"
+                  ></span>
+                  <span id="preview_desc"></span>
+                </p>
+                <button id="preview_btn">Add to card</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script>
+      let admin_orders_main_body = document.querySelector(
+        "#admin_orders_main_body"
+      );
+      let admin_users_main_body = document.querySelector(
+        "#admin_users_main_body"
+      );
+      let admin_products_main_body = document.querySelector(
+        "#admin_products_main_body"
+      );
+      let admin_add_products_main_body = document.querySelector(
+        "#admin_add_products_main_body"
+      );
+      let all_orders_option = document.querySelector("#all_orders_option");
+      let all_users_option = document.querySelector("#all_users_option");
+      let all_products_option = document.querySelector("#all_products_option");
+      let add_products_option = document.querySelector("#add_products_option");
+      window.addEventListener("load", function () {
+        AllOdersSection();
+      });
+
+      function showAllOrders() {
+        admin_orders_main_body.style.display = "flex";
+
+        admin_users_main_body.style.display = "none";
+        admin_products_main_body.style.display = "none";
+        admin_add_products_main_body.style.display = "none";
+
+        all_orders_option.style.paddingBottom = "4px";
+        AllOdersSection();
+      }
+      function showAllUsers() {
+        admin_users_main_body.style.display = "flex";
+
+        admin_orders_main_body.style.display = "none";
+        admin_products_main_body.style.display = "none";
+        admin_add_products_main_body.style.display = "none";
+
+        all_users_option.style.paddingBottom = "4px";
+        AllUsersSection();
+      }
+      function showAllProducts() {
+        admin_products_main_body.style.display = "flex";
+
+        admin_users_main_body.style.display = "none";
+        admin_orders_main_body.style.display = "none";
+        admin_add_products_main_body.style.display = "none";
+
+        all_products_option.style.paddingBottom = "4px";
+        AllProductSection();
+      }
+      async function AllOdersSection() {
+        await fetch("https://63c64dbad307b76967365584.mockapi.io/orders")
+          .then((res) => res.json())
+          .then((orders) => {
+            let all_orders_list = document.querySelector("#all_orders_list");
+            let arrOfallOrders = [];
+            for (let i = 0; i < orders.length; i++) {
+              // order details
+              let total_price = 0;
+              let arrOfallOrdersDetails = [];
+              let orderInfo = orders[i].orderDetails;
+              if (orderInfo.length == 0) continue;
+              for (let j = 0; j < orderInfo.length; j++) {
+                let eachOrder = orderInfo[j];
+                total_price += eachOrder.count * eachOrder.price;
+                arrOfallOrdersDetails.push(`
+                      <tr>
+                        <td>${eachOrder.id}</td>
+                        <td>${eachOrder.title}</td>
+                        <td>${eachOrder.count}</td>
+                        <td>${eachOrder.price}</td>
+                      </tr>
+                `);
+              }
+
+              // header of each orders
+              let order = orders[i];
+              arrOfallOrders.push(
+                `
+                <div class="one_order_list_card">
+                  <div class="order_short_info" style="margin-bottom: 10px">
+                    <span>
+                      <svg>
+                        <path
+                          d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
+                        />
+                      </svg>
+                      <span>${order.id}</span>
+                    </span>
+                    <span>${order.orderDetails[0].id}</span>
+                    <span>${order.orderDetails.length}</span>
+                    <span onclick="orderCompleted()" data-id="${order.id}"
+                      >Mark As Delivered</span
+                    >
+                  </div>
+                  <div class="order_detailed_info">
+                    <div class="all_ordered_item_name_list">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Pricing</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${arrOfallOrdersDetails.join(" ")}
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th colspan="3">Total Amount</th>
+                            <th>${total_price}</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                `
+              );
+            }
+            let orders_loading = document.getElementById("orders_loading");
+            orders_loading.style.display = "none";
+            all_orders_list.innerHTML = arrOfallOrders.join(" ");
+          });
+      }
+      async function orderCompleted() {
+        let product_id = event.target.dataset.id;
+        let parent_id = event.target.closest(".one_order_list_card");
+        setTimeout(() => {
+          parent_id.style.height = "10px";
+          setTimeout(() => {
+            parent_id.remove();
+          }, 100);
+        }, 250);
+        await fetch(
+          `https://63c64dbad307b76967365584.mockapi.io/orders/${product_id}`,
+          {
+            method: "delete",
+          }
+        );
+      }
+      async function AllUsersSection() {
+        let all_users_list = document.getElementById("all_users_list");
+        await fetch("https://63c59ffce1292e5bea27a4a8.mockapi.io/users")
+          .then((res) => res.json())
+          .then((users) => {
+            let show_user_list = [];
+            users.forEach((user) => {
+              show_user_list.push(`<div class="one_user_list_card">
+                <div class="user_short_info">
+                  <span>${user.id}</span>
+                  <span>${user.fname}</span>
+                  <span>${user.email}</span>
+                  <span data-id=${user.id} onclick="deleteUserFunc()">Delete</span>
+                </div>
+              </div>`);
+            });
+            let users_loading = document.getElementById("users_loading");
+            users_loading.style.display = "none";
+            all_users_list.innerHTML = show_user_list.join(" ");
+          });
+      }
+      async function deleteUserFunc() {
+        let product_id = event.target.dataset.id;
+        let card = event.target.closest(".user_short_info");
+        setTimeout(() => {
+          card.style.height = "10px";
+          setTimeout(() => {
+            card.remove();
+          }, 100);
+        }, 250);
+        await fetch(
+          `https://63c59ffce1292e5bea27a4a8.mockapi.io/users/${product_id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      }
+      async function AllProductSection() {
+        let product_table = document.querySelector("#product_table");
+        let all_products = [];
+        let all_products_Html = [];
+        await fetch("https://63c59ffce1292e5bea27a4a8.mockapi.io/products")
+          .then((res) => res.json())
+          .then((data) => (all_products = data));
+        all_products.forEach((element) => {
+          all_products_Html.push(`
+              <div class="one_product_card_at_admin">
+                  <div>
+                    <img
+                      src=${element.image}
+                      alt=""
+                    />
+                  </div>
+                  <div>
+                    <span>Category</span>
+                    <input
+                      type="text"
+                      placeholder="Enter Category"
+                      value=${element.category}
+                      readonly
+                    />
+                  </div>
+                  <div>
+                    <span>Name</span>
+                    <input
+                      type="text"
+                      placeholder="Enter Product Name"
+                      value=${element.title}
+                      readonly
+                    />
+                  </div>
+                  <div>
+                    <span>Description</span>
+                    <textarea
+                      cols="30"
+                      placeholder="Enter Product Description"
+                      rows="5"
+                      readonly
+                    >${element.description}</textarea>
+                  </div>
+                  <div>
+                    <span>Price</span>
+                    <input
+                      type="number"
+                      placeholder="Enter Product Rate"
+                      value=${element.price}
+                      readonly
+                    />
+                  </div>
+                  <div>
+                    <span>Image</span>
+                    <input
+                      type="url"
+                      placeholder="Main Image URL"
+                      value="${element.image}"
+                      readonly
+                    />
+                  </div>
+                  <div>
+                      <button data-id = "${element.id}" onclick="editProduct()">EDIT</button>
+                      <button data-id = "${element.id}" onclick="deleteProduct()">DELETE</button>
+                  </div>
+                </div>
+              `);
+        });
+        let products_loading = document.getElementById("products_loading");
+        products_loading.style.display = "none";
+        product_table.innerHTML = all_products_Html.join(" ");
+      }
+      let isEditClicked = false;
+      function editProduct() {
+        let product_id = event.target.dataset.id;
+        let element_btn = event.target;
+        let parent = event.target.closest(".one_product_card_at_admin");
+        let all_input_filde = parent.querySelectorAll("input");
+        let testarea_filde = parent.querySelector("textarea");
+        if (isEditClicked == false) {
+          element_btn.style.backgroundColor = "rgb(244 255 91)";
+          element_btn.style.color = "#000000";
+          element_btn.innerText = "SAVE";
+          for (let i = 0; i < all_input_filde.length; i++) {
+            all_input_filde[i].removeAttribute("readonly");
+          }
+          testarea_filde.removeAttribute("readonly");
+          isEditClicked = true;
+        } else {
+          all_input_filde = parent.querySelectorAll("input");
+          testarea_filde = parent.querySelector("textarea");
+          let input_value_arr = [];
+          for (let i = 0; i < all_input_filde.length; i++) {
+            input_value_arr.push(all_input_filde[i].value);
+            all_input_filde[i].setAttribute("readonly", "true");
+          }
+          input_value_arr.push(testarea_filde.value);
+          testarea_filde.setAttribute("readonly", "true");
+          element_btn.style.backgroundColor = "#cd1d1d";
+          element_btn.style.color = "#ffffff";
+          element_btn.innerText = "EDIT";
+          isEditClicked = false;
+          let new_obj = {
+            id: product_id,
+            title: input_value_arr[1] || "No Title",
+            description: input_value_arr[4] || "No Description",
+            image: input_value_arr[3],
+            category: input_value_arr[0] || "No category",
+            price: input_value_arr[2] || 0,
+          };
+          updateProdunt(new_obj, product_id);
+        }
+      }
+      async function updateProdunt(new_obj, product_id) {
+        let obj = {};
+        await fetch(
+          `https://63c59ffce1292e5bea27a4a8.mockapi.io/products/${product_id}`
+        )
+          .then((res) => res.json())
+          .then((data) => (obj = data));
+        obj.id = new_obj.id;
+        obj.title = new_obj.title;
+        obj.description = new_obj.description;
+        obj.image = new_obj.image;
+        obj.category = new_obj.category;
+        obj.price = new_obj.price;
+        console.log(obj);
+        await fetch(
+          `https://63c59ffce1292e5bea27a4a8.mockapi.io/products/${product_id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(obj),
+          }
+        );
+      }
+      function showAddProductSec() {
+        admin_add_products_main_body.style.display = "flex";
+
+        admin_users_main_body.style.display = "none";
+        admin_orders_main_body.style.display = "none";
+        admin_products_main_body.style.display = "none";
+
+        add_products_option.style.paddingBottom = "4px";
+      }
+      function previewNewProductCard() {
+        data = [];
+        let input_data = document.querySelectorAll("input[data-key]");
+        for (let i = 0; i < input_data.length; i++)
+          data.push(input_data[i].value);
+        let textarea_data = document.querySelector("textarea[data-key]");
+        data.push(textarea_data.value);
+
+        let newProductPreviewInput = {
+          category: data[0],
+          sub_category: data[1],
+          title: data[2] || "No Title",
+          price: data[3],
+          img: data[4],
+          description: data[5] || "No Description",
+        };
+        let preview_container = document.querySelector("#preview_container");
+        preview_container.style.display = "block";
+        let img_container = document.querySelector("#preview_container img");
+        img_container.src = newProductPreviewInput.img;
+        let priceArr = newProductPreviewInput.price.split(".");
+        priceArr[0] = priceArr[0] || 0;
+        priceArr[1] = priceArr[1] || 0;
+        let preview_price_pre_dot = document.querySelector(
+          "#preview_price_pre_dot"
+        );
+        preview_price_pre_dot.innerText = `$${priceArr[0]}`;
+        let preview_price_post_dot = document.querySelector(
+          "#preview_price_post_dot"
+        );
+        preview_price_post_dot.innerText = `.${priceArr[1]}`;
+        let preview_title = document.querySelector("#preview_title");
+        preview_title.innerText = newProductPreviewInput.title;
+        let preview_desc = document.querySelector("#preview_desc");
+        preview_desc.innerText = newProductPreviewInput.description;
+      }
+      async function addNewProduct() {
+        previewNewProductCard();
+        let obj = {
+          title: data[2] || "No Title",
+          description: data[5] || "No Description",
+          image: data[4],
+          category: data[0] || "No category",
+          price: data[3] || 0,
+          sub_category: data[1] || "No sub-category",
+          rating: Math.floor(Math.random() * 5 + 1),
+        };
+        await fetch(`https://63c59ffce1292e5bea27a4a8.mockapi.io/products`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(obj),
+        });
+        let preview_container = (document.querySelector(
+          "#preview_container"
+        ).style.display = "none");
+      }
+      async function deleteProduct() {
+        let product_id = event.target.dataset.id;
+        console.log(product_id);
+        let card = event.target.closest(".one_product_card_at_admin");
+        setTimeout(() => {
+          card.style.height = "0px";
+          setTimeout(() => {
+            card.remove();
+          }, 100);
+        }, 450);
+        await fetch(
+          `https://63c59ffce1292e5bea27a4a8.mockapi.io/products/${product_id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      }
+    </script>
+  </body>
+</html>

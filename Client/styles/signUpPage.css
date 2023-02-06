@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+box-sizing: border-box;
+
+}
+
+#navbar-signup {
+    background-color: #000033;
+    display: flex;
+    justify-content: space-between;    
+}
+
+#navbar-signup a {
+    color: whitesmoke;
+    text-decoration: none;
+    padding-top: 15px;
+    margin-top: 5%;
+    font-size: larger;
+}
+
+#logo {
+    width: 160px;
+    height: 60px;
+    display: block;
+    margin: auto;
+}
+
+
+label {
+    font-size: 18px;
+    font-family: "Open Sans", sans-serif;
+    color: rgb(55, 55, 55);
+    font-weight: 600;
+
+}
+
+
+#for4inputs input {
+    box-sizing: border-box;
+    margin: 0px;
+    min-width: 0px;
+    display: block;
+    width: 100%;
+    background-color: rgb(242, 242, 242);
+    border-radius: 4px;
+    padding: 10px;
+    border: none;
+    width: 500px;
+    height: 50px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+
+}
+
+
+
+#Maindiv {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    /* background-color: rebeccapurple; */
+}
+
+#heading {
+
+    box-sizing: border-box;
+    margin: 0px;
+    min-width: 0px;
+    font-size: 30px;
+    font-family: "Open Sans", sans-serif;
+    line-height: 32px;
+    color: rgb(55, 55, 55);
+    font-weight: 400;
+    text-align: center;
+    padding-bottom: 5px;
+    padding-top: 20px;
+}
+
+#banner {
+    /* padding-left: 60px; */
+    width: 80%;
+    height: 700px;
+    margin-left: 20px;
+}
+
+#banner>img{
+width: 90%;
+height: 100%;
+margin-left: 8%;
+}
+form {
+    margin-left: 70px;
+}
+
+#messageSignUp{
+    color: red;
+    text-align: center;
+    font-size: 16px;
+}
+
+#signUpBtn{
+    box-sizing: border-box;
+    margin: 0px;
+    min-width: 0px;
+    display: block;
+    width: 100%;
+    background-color: rgb(242, 242, 242);
+    border-radius: 4px;
+    padding: 10px;
+    border: none;
+    width: 500px;
+    height: 50px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+
+}
+#instructions p{
+    box-sizing: border-box;
+    margin: 0;
+    min-width: 0;
+    font-size: 14px;
+    font-family: "Open Sans", sans-serif;
+    line-height: 20px;
+    color: #373737;
+    font-weight: 400;
+    margin-bottom: 1px;
+
+}
+
+              
+#closebtn{
+    margin-right: 20px;
+    margin-top: 18px;
+}
